@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+cat <<EOF
+🚀 Hello World!
+
+You can add your default init command into src/bin/docker-run.
+It is called as the default Docker CMD, and initiated through the
+src/bin/docker-entrypoint entrypoint.
+
+See README.md for getting started instructions.
+EOF

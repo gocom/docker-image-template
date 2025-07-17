@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+set -e
+
+if [ "$(id -u)" -eq 0 ]; then
+  # Map APP_GROUP to HOST_GID, as long as the GID is free.
+  if ! [ "${HOST_GID:-0}" -eq 0 ]; then
+    groupmod --gid "$HOST_GID" "$APP_GROUP" > /dev/null 2>&1 || true
+  fi
+
+  # Map APP_USER to HOST_UID, as long as the UID is free.
+  if ! [ "${HOST_UID:-0}" -eq 0 ]; then
+    usermod --uid "$HOST_UID" "$APP_USER" > /dev/null 2>&1  || true
+  fi
+
+  # Clean up file ownership.
+  docker-chown-directory "$APP_DIRECTORY"
+fi

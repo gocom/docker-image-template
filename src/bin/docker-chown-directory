@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+if [ "$1" ] && [ -e "$1" ]; then
+  find "$1" \
+    \( ! -user "$APP_USER" -o ! -group "$APP_GROUP" \) \
+    -exec chown "$APP_USER:$APP_GROUP" {} +
+fi

@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+set -e
+docker-permissions
+
+if [ "$#" -gt 0 ]; then
+  if [[ "$1" == "-"* ]] || ! [ "$(command -v "$1" 2> /dev/null)" ]; then
+    if [[ "$1" == "--" ]]; then
+      shift 1
+    fi
+
+    set -- docker-run "$@"
+  fi
+
+  if [ "$1" = "docker-run" ] && [ "$(id -u)" -eq 0 ] && [ "$APP_USER" ]; then
+    set -- gosu "$APP_USER:$APP_GROUP" "$@"
+  fi
+
+  exec "$@"
+fi
