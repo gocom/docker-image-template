@@ -4,7 +4,7 @@ Contributing
 License
 -----
 
-[MIT](./LICENSE).
+See [LICENSE](./LICENSE).
 
 Versioning
 -----

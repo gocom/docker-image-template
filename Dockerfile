@@ -17,7 +17,9 @@ ENV APP_GROUP=app
 
 COPY --chmod=0755 ./src/bin/* /usr/local/bin/
 
-RUN groupadd -g "$APP_GID" "$APP_GROUP" \
+RUN apt-get update && apt-get install -y \
+  gosu \
+  && groupadd -g "$APP_GID" "$APP_GROUP" \
   && useradd -m -u "$APP_UID" -g "$APP_GROUP" "$APP_USER" \
   && chmod 777 "$APP_DIRECTORY" \
   && chown -R "$APP_USER:$APP_GROUP" "$APP_DIRECTORY"

@@ -1,9 +1,8 @@
-.PHONY: all build depends help push run test
+.PHONY: all build depends help push run shell test
 
-DOCKER_IMAGE_NAME ?= ""
-DOCKER_IMAGE_TAG ?= ""
+DOCKER_IMAGE_NAME ?=
+DOCKER_IMAGE_TAG ?= dev
 DOCKER_IMAGE_PLATFORM ?= linux/amd64
-DOCKER_IMAGE_COMMAND ?= bash
 
 RUN = docker run -it --rm "$(DOCKER_IMAGE_NAME):$(DOCKER_IMAGE_TAG)"
 BUILD = docker build --platform "$(DOCKER_IMAGE_PLATFORM)" -t "$(DOCKER_IMAGE_NAME):$(DOCKER_IMAGE_TAG)"
@@ -11,14 +10,9 @@ BUILD = docker build --platform "$(DOCKER_IMAGE_PLATFORM)" -t "$(DOCKER_IMAGE_NA
 all: help
 
 depends:
-ifeq ($(DOCKER_IMAGE_NAME),"")
+ifeq ($(DOCKER_IMAGE_NAME),)
 	@echo "DOCKER_IMAGE_NAME environment variable is required."
-	exit 1
-endif
-
-ifeq ($(DOCKER_IMAGE_TAG),"")
-	@echo "DOCKER_IMAGE_TAG environment variable is required."
-	exit 1
+	@exit 1
 endif
 
 build: depends
@@ -28,7 +22,10 @@ push: depends
 	$(BUILD) . --push
 
 run: depends
-	$(RUN) "$(DOCKER_IMAGE_COMMAND)"
+	$(RUN)
+
+shell: depends
+	$(RUN) bash
 
 test: depends
 	@echo "No smoke tests provided."
@@ -41,7 +38,6 @@ help:
 	@echo "    [DOCKER_IMAGE_NAME=<image>]"
 	@echo "    [DOCKER_IMAGE_TAG=<tag>]"
 	@echo "    [DOCKER_IMAGE_PLATFORM=<platform>]"
-	@echo "    [DOCKER_IMAGE_COMMAND=<command>]"
 	@echo "  ]"
 	@echo ""
 	@echo "Commands:"
@@ -57,6 +53,9 @@ help:
 	@echo ""
 	@echo "  $$ make run"
 	@echo "  Run the built Docker image"
+	@echo ""
+	@echo "  $$ make shell"
+	@echo "  Log in to the container"
 	@echo ""
 	@echo "  $$ make test"
 	@echo "  Run smoke test"
