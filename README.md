@@ -1,7 +1,7 @@
 Image Template
 =====
 
-📦 Image `ghcr.io/gocom/docker-image-template` in [Container Registry](https://github.com/gocom/docker-image-template/pkgs/container/docker-image-template)
+Image: `ghcr.io/gocom/docker-image-template` | [Container Registry](https://github.com/gocom/docker-image-template/pkgs/container/docker-image-template)
 
 > [!NOTE]
 > This is a personal Docker image template. It publishes images to GitHub Container Registry via GitHub Actions, when
@@ -14,7 +14,7 @@ Image Template
 
 To set up the image repository using the template:
 
-* [ ] Update `DOCKER_IMAGE_NAME` variable's default value to [Makefile](./Makefile), You can also add smoke tests, or custom targets for automation.
+* [ ] Update `DOCKER_IMAGE_NAME` variable's default value to [Makefile](./Makefile). You can also add smoke tests, or custom targets for automation.
 * [ ] Update your build steps and meta-data to [Dockerfile](./Dockerfile). You could keep the default binaries, default command and entrypoint to use the same user mapping functionality.
 * [ ] Add your default start up command, such as service start up, to the [src/bin/docker-run](./src/bin/docker-run).
 * [ ] Test building using the instructions found in [CONTRIBUTING.md](./CONTRIBUTING.md#building-locally).
