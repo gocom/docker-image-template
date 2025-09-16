@@ -18,18 +18,18 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Get version
-        id: version
+      - name: Get metadata
+        id: meta
         run: |
-          echo "contents<<VERSIONEOF" >> $GITHUB_OUTPUT
-          basename "$GITHUB_REF" >> $GITHUB_OUTPUT
-          echo "VERSIONEOF" >> $GITHUB_OUTPUT
+          echo "version=$(basename "$GITHUB_REF")" >> $GITHUB_OUTPUT
 
       - name: Changelog
         id: changelog
+        env:
+          VERSION: ${{ steps.version.outputs.contents }}
         run: |
           echo "contents<<CHANGELOGEOF" >> $GITHUB_OUTPUT
-          sed -e "1,/## $version/d" -e '/##/,$d' CHANGELOG.md >> $GITHUB_OUTPUT
+          sed -e "1,/## $VERSION/d" -e '/##/,$d' CHANGELOG.md >> $GITHUB_OUTPUT
           echo "CHANGELOGEOF" >> $GITHUB_OUTPUT
 
       - name: Create release
@@ -37,4 +37,4 @@ jobs:
         uses: shogo82148/actions-create-release@v1
         with:
           body: ${{ steps.changelog.outputs.contents }}
-          prerelease: ${{ contains(steps.version.outputs.contents, '-') }}
+          prerelease: ${{ contains(steps.meta.outputs.version, '-') }}
